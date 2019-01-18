@@ -7,6 +7,7 @@ This project contains some testing classes for sentiment analysis. Inspired by t
 
 Central is the [Textblob](https://planspace.org/20150607-textblob_sentiment/) library.
 
+* [Plotting](https://python-graph-gallery.com/)
 
 Each word in the lexicon has scores for:
 *  polarity: negative vs. positive    (-1.0 => +1.0)
