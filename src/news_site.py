@@ -1,7 +1,7 @@
 import urllib
 import texttable
 from enum import Enum
-from googlesearch.googlesearch import GoogleSearch
+from google import google
 from bs4 import BeautifulSoup
 from textblob import TextBlob
 
@@ -20,7 +20,7 @@ class NewsSite:
         self.search_links_list = []
 
     def google_search(self, fetch_type):
-        search_results = GoogleSearch().search("inurl:" + self.site_name + " intext:" + self.search_key, num_results=self.search_depth)
+        search_results = google.search("inurl:" + self.site_name + " intext:" + self.search_key, search_depth=self.search_depth)
         #search_results = google.search("inurl:" + self.site_name + " intext:" + self.search_key, pages=self.search_depth)
         for result in search_results:
             if fetch_type == FetchType.DESCRIPTION:
