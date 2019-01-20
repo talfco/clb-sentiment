@@ -1,21 +1,26 @@
 import re
 import tweepy
+import yaml
 from tweepy import OAuthHandler
 from textblob import TextBlob
 
+
+# Generic Twitter Class for sentiment analysis.
 class TwitterClient(object):
-    '''
-    Generic Twitter Class for sentiment analysis.
-    '''
+
     def __init__(self):
-        '''
-        Class constructor or initialization method.
-        '''
-        # keys and tokens from the Twitter Dev Console
-        consumer_key = 'XXXXXXXXXXXXXXXXXXXXXXXX'
-        consumer_secret = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-        access_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-        access_token_secret = 'XXXXXXXXXXXXXXXXXXXXXXXXX'
+        res = {}
+        # Reading the secret values from a local disk
+        with open("../../secret/twitter.yaml", 'r') as stream:
+            try:
+                res= yaml.load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+
+        consumer_key = res['apiKey']
+        consumer_secret = res['apiSecretKey']
+        access_token = res['accessToken']
+        access_token_secret = res['accessSecretToken']
 
         # attempt authentication
         try:
@@ -90,7 +95,7 @@ def main():
     # creating object of TwitterClient Class
     api = TwitterClient()
     # calling function to get tweets
-    tweets = api.get_tweets(query = 'Donald Trump', count = 200)
+    tweets = api.get_tweets(query = 'from:cnn Trump', count = 200)
 
     # picking positive tweets from tweets
     ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
@@ -101,8 +106,8 @@ def main():
     # percentage of negative tweets
     print("Negative tweets percentage: {} %".format(100*len(ntweets)/len(tweets)))
     # percentage of neutral tweets
-    print("Neutral tweets percentage: {} % \
-          ".format(100*len(tweets - ntweets - ptweets)/len(tweets)))
+    nt = len(tweets)-len(ntweets)-len(ptweets)
+    print("Neutral tweets percentage: {} %".format(100*nt/len(tweets)))
 
     # printing first 5 positive tweets
     print("\n\nPositive tweets:")
@@ -115,5 +120,5 @@ def main():
         print(tweet['text'])
 
 if __name__ == "__main__":
-# calling main function
     main()
+
