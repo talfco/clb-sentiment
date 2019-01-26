@@ -69,7 +69,7 @@ class TwitterClient(object):
         df = pd.DataFrame(panda_data , index=labels)
         print(df)
 
-        trace = plotly.graph_objs.Table(
+        trace = go.Table(
         header=dict(values=list(df.columns)),
         cells=dict(values=[df.ScreenName, df.Name, df.Description, df.FollowersCount, df.FriendsCount]))
         data = [trace]
