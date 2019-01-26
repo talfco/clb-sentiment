@@ -1,0 +1,34 @@
+@startuml
+
+
+class Tweepy  {
+    OAuthHandler
+}
+
+class Pandas {
+  DataFrame
+}
+
+class Yaml {
+  load()
+}
+
+class Plotly {
+    graph_objs
+    plotly
+}
+
+class TwitterClient {
+  __api
+  __init__()
+  get_government_members()
+  create_plotly_table()
+}
+
+Tweepy <.. TwitterClient : uses
+Pandas <.. TwitterClient: uses
+Plotly <.. TwitterClient: uses
+Yaml <.. TwitterClient: uses
+
+
+@enduml

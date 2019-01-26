@@ -4,6 +4,12 @@ This project contains some testing classes for sentiment analysis. Inspired by t
 
 * [Datascience Tutorial](https://towardsdatascience.com/ranking-news-bias-in-python-e9bb5d1ba93f)
 * [Geeks for Geeks Tutorial](https://www.geeksforgeeks.org/twitter-sentiment-analysis-using-python/) 
+* https://www.analyticsvidhya.com/blog/2018/07/hands-on-sentiment-analysis-dataset-python/
+* https://www.python-kurs.eu/pandas.php
+* https://www.w3resource.com/python-exercises/pandas/python-pandas-data-frame-exercise-20.php
+* https://textblob-de.readthedocs.io/en/latest/
+* https://www.tagesanzeiger.ch/zuerich/region/Fuenf-Frauen-und-sieben-Maenner-im-Rennen-um-den-Regierungsrat/story/15464410
+
 
 Central is the [Textblob](https://planspace.org/20150607-textblob_sentiment/) library.
 

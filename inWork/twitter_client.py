@@ -1,8 +1,14 @@
-import re
 import tweepy
 import yaml
+import pandas as pd
+import numpy as np
+import plotly.plotly as py
+import plotly.graph_objs as go
+
 from tweepy import OAuthHandler
 from textblob import TextBlob
+# Own Modules
+from text_cleaners import clean_text
 
 
 # Generic Twitter Class for sentiment analysis.
@@ -29,16 +35,10 @@ class TwitterClient(object):
             # set access token and secret
             self.auth.set_access_token(access_token, access_token_secret)
             # create tweepy API object to fetch tweets
-            self.api = tweepy.API(self.auth)
+            self.__api = tweepy.API(self.auth)
         except:
             print("Error: Authentication Failed")
 
-    def clean_tweet(self, tweet):
-        '''
-        Utility function to clean tweet text by removing links, special characters
-        using simple regex statements.
-        '''
-        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) |(\w+:\/\/\S+)", " ", tweet).split())
 
     def get_tweet_sentiment(self, tweet):
         '''
@@ -46,7 +46,7 @@ class TwitterClient(object):
         using textblob's sentiment method
         '''
         # create TextBlob object of passed tweet text
-        analysis = TextBlob(self.clean_tweet(tweet))
+        analysis = TextBlob(clean_text(tweet))
         # set sentiment
         if analysis.sentiment.polarity > 0:
             return 'positive'
@@ -64,7 +64,7 @@ class TwitterClient(object):
 
         try:
             # call twitter api to fetch tweets
-            fetched_tweets = self.api.search(q = query, count = count)
+            fetched_tweets = self.__api.search(q = query, count = count)
 
             # parsing tweets one by one
             for tweet in fetched_tweets:
@@ -75,6 +75,10 @@ class TwitterClient(object):
                 parsed_tweet['text'] = tweet.text
                 # saving sentiment of tweet
                 parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
+
+                parsed_tweet['favorite_count'] = tweet.favorite_count
+                parsed_tweet['retweet_count'] =tweet.retweet_count
+                parsed_tweet['hashtags']= tweet.entities["hashtags"]
 
                 # appending parsed tweet to tweets list
                 if tweet.retweet_count > 0:
@@ -91,11 +95,26 @@ class TwitterClient(object):
             # print error (if any)
             print("Error : " + str(e))
 
+    def getMember(self):
+        user = self.__api.get_user('SoMePolis')
+        lists = self.__api.lists_all('SoMePolis')
+        personList = None
+        for list in lists:
+            if list.name == 'BundesparlamentarierInnen':
+                personList = list
+        print(user)
+
+
 def main():
     # creating object of TwitterClient Class
     api = TwitterClient()
+
+    api.getMember()
+
     # calling function to get tweets
     tweets = api.get_tweets(query = 'from:cnn Trump', count = 200)
+
+
 
     # picking positive tweets from tweets
     ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
@@ -108,6 +127,31 @@ def main():
     # percentage of neutral tweets
     nt = len(tweets)-len(ntweets)-len(ptweets)
     print("Neutral tweets percentage: {} %".format(100*nt/len(tweets)))
+
+
+    col1 = [tweet["sentiment"] for tweet in tweets]
+    col2 = [tweet["favorite_count"] for tweet in tweets]
+    col3 = [tweet["retweet_count"] for tweet in tweets]
+    col4 = [tweet["hashtags"] for tweet in tweets]
+    col5 = [tweet["text"] for tweet in tweets]
+    labels = range(0,len(tweets))
+
+    # Panda Data Set
+    panda_data = { 'Sentiment' : col1,
+                   'Favorite Count': col2,
+                   'Retweet Count' : col3
+                 }
+    df = pd.DataFrame(panda_data , index=labels)
+    print(df)
+
+    # Plotly Table
+    #trace = go.Table(
+    #                 header=dict(values=['Sentiment','Favorite Count','Retweet Count','Hashtags','Text']),
+    #                 cells=dict(values=[col1, col2, col3,col4,col5]))
+
+    #data = [trace]
+    #py.iplot(data, filename = 'basic_table')
+
 
     # printing first 5 positive tweets
     print("\n\nPositive tweets:")
