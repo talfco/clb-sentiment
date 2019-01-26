@@ -1,6 +1,8 @@
 @startuml
 
 
+title lession1.py
+
 class Tweepy  {
     OAuthHandler
 }
