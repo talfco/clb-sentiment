@@ -7,14 +7,13 @@ from pandas import DataFrame
 
 
 # Generic Twitter Class for sentiment analysis.
-# https://twitter.com/SoMePolis
 class TwitterClient(object):
 
 
     def __init__(self):
         res = {}
         # Reading the secret values from a local disk
-        with open("../../secret/twitter.yaml", 'r') as stream:
+        with open("../../../secret/twitter.yaml", 'r') as stream:
             try:
                 res= yaml.load(stream)
             except yaml.YAMLError as exc:
