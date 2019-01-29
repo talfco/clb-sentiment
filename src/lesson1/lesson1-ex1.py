@@ -89,7 +89,7 @@ class TwitterClient(object):
             header = dict(values=list(df.columns)),
             cells = dict(values=[df.ScreenName, df.Name, df.Description, df.FollowersCount, df.FriendsCount, df.Party]))
         data = [trace]
-        plotly.plotly.iplot(data, filename='clb-sentiment-2')
+        plotly.plotly.plot(data, filename='clb-sentiment-2')
 
 
 
