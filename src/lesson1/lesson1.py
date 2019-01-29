@@ -70,7 +70,7 @@ class TwitterClient(object):
         header = dict(values=list(df.columns)),
         cells = dict(values=[df.ScreenName, df.Name, df.Description, df.FollowersCount, df.FriendsCount]))
         data = [trace]
-        plotly.plotly.iplot(data, filename='pandas_table')
+        plotly.plotly.plot(data, filename='pandas_table')
 
 
 def main():
