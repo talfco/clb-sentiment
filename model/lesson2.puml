@@ -1,0 +1,37 @@
+@startuml
+
+
+title lession2.py
+
+class Tweepy  {
+   + OAuthHandler
+}
+
+class Pandas {
+  + DataFrame
+}
+
+class Yaml {
+  + load()
+}
+
+class Plotly {
+    + graph_objs
+    + plotly
+}
+
+class GovernmentSocialMediaAnalyzer {
+  - __api
+  - __cfg
+  + __init__(country_code)
+  + get_government_members()
+  +create_plotly_table()
+}
+
+Tweepy <.. GovernmentSocialMediaAnalyzer : uses
+Pandas <.. GovernmentSocialMediaAnalyzer: uses
+Plotly <.. GovernmentSocialMediaAnalyzer: uses
+Yaml <.. GovernmentSocialMediaAnalyzer: uses
+
+
+@enduml

@@ -9,7 +9,6 @@ from pandas import DataFrame
 # Generic Twitter Class for sentiment analysis.
 class TwitterClient(object):
 
-
     def __init__(self):
         res = {}
         # Reading the secret values from a local disk
