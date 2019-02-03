@@ -62,6 +62,7 @@ class GovernmentSocialMediaAnalyzer(object):
         except:
             print("Error: Authentication Failed")
             exit(1)
+
         self.__extract_columns()
 
     def __extract_columns(self):
@@ -72,7 +73,6 @@ class GovernmentSocialMediaAnalyzer(object):
         self.__col_description = [account.description for account in accounts]
         self.__col_followers_count = [account.followers_count for account in accounts]
         self.__col_friends_count = [account.friends_count for account in accounts]
-
         # Exercise 1: Identify the Party
         self.__col_party = self.__check_for_party(accounts)
 
@@ -138,16 +138,60 @@ class GovernmentSocialMediaAnalyzer(object):
         # Create a Plotly Table
         trace = go.Table(
             header = dict(values=list(df.columns)),
-            cells = dict(values=[df.ScreenName, df.Name, df.Description,
-                                 df.FollowersCount, df.FriendsCount, df.Party]))
+            cells = dict(values=[df.ScreenName, df.Name, df.Description, df.FollowersCount, df.FriendsCount, df.Party]))
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-politician-list')
 
+    def create_party_table(self):
+        # Panda Data Frame - Table of Tweeter Users per Party
+        # https://stackoverflow.com/questions/48909110/python-pandas-mean-and-sum-groupby-on-different-columns-at-the-same-time
+        panda_data = { "Party": self.__col_party,
+                       "PartyCount": self.__col_party, # Duplicate Party column for the counting
+                       "FollowersCount": self.__col_followers_count,
+                       "FriendsCount": self.__col_friends_count
+                       }
+        df = DataFrame(panda_data , index=self.__labels)
+        # We use the as_index parameter, so that Party will also be a column of the data frame
+        df = df.groupby(["Party"], as_index=False).agg({'PartyCount':'count','FollowersCount':'sum', 'FriendsCount': 'sum'})
+        df = df.sort_values(['FollowersCount'], ascending=[0])
+        print(df)
+        # Create a Plotly Table
+        trace = go.Table(
+            header = dict(values=list(df.columns)),
+            cells = dict(values=[df.Party,  df.PartyCount, df.FollowersCount, df.FriendsCount]))
+        data = [trace]
+        py.plot(data, filename=self.__country_code+'-tw-party-list')
+        return df
+
+    def create_party_friends_count_bar_chart(self, df):
+        data = [
+            go.Bar(
+                x=df.Party, # assign x as the dataframe column 'x'
+                y=df.FriendsCount
+            )
+        ]
+        py.plot(data, filename=self.__country_code+'-tw-party_politicans_count')
+
+
+    def create_party_politicans_count_pie_chart(self, df):
+        trace = go.Pie(labels=df.Party, values=df.PartyCount,
+                       hoverinfo='label+percent', textinfo='value',
+                       title="Twitter User per Party", titlefont=dict(
+                            family='Courier New, monospace',
+                            size=14,
+                            color='#7f7f7f'
+                        ))
+        data = [trace]
+        py.plot(data, filename=self.__country_code+'-tw-party_friends_count')
 
 
 def main():
     analyzer_ch = GovernmentSocialMediaAnalyzer("CH")
     analyzer_ch.create_politican_table()
+    df = analyzer_ch.create_party_table()
+    analyzer_ch.create_party_friends_count_bar_chart(df)
+    analyzer_ch.create_party_politicans_count_pie_chart(df)
+
 
 if __name__ == '__main__':
     main()

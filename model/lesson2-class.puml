@@ -21,11 +21,24 @@ class Plotly {
 }
 
 class GovernmentSocialMediaAnalyzer {
+  .. private instance variables ..
   - __api
   - __cfg
+  - __country_code
+  - __col_screen_name
+  - __col_name
+  - __col_description
+  - __col_followers_count
+  - __col_friends_count
+  - __col_party
+  - __df
+  -- public methods --
   + __init__(country_code)
-  + get_government_members()
-  +create_plotly_table()
+  + create_politican_table()
+  .. private methods ..
+  - __extract_columns()
+  - __get_government_members()
+  - __check_for_party(user_list)
 }
 
 Tweepy <.. GovernmentSocialMediaAnalyzer : uses

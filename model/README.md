@@ -2,4 +2,15 @@
 
 ## Lesson 1
 
-![PlantU;L Diagram](/model/out/lession1.png)
+### Class Diagram
+
+![Class Diagram](/model/out/lession1.png)
+
+## Lession 2
+
+### Class Diagram
+
+![Class Diagram](/model/out/lession2-class.png)
+
+### Sequence Diagram
+

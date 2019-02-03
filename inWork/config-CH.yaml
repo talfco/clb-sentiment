@@ -1,0 +1,105 @@
+twitterListAccount: "SoMePolis"
+twitterListName: "BundesparlamentarierInnen"
+
+languages: ["de","fr","it","en"]
+# https://www.parlament.ch/de/organe/fraktionen/im-parlament-vertretene-parteien
+parties:
+    - website: "https://www.fdp.ch"
+      twitter: "FDP_Liberalen"
+      abbrs: ["FDP","PLR"]
+      name:
+        de: "FDP.Die Liberalen"
+        fr: "Les Liberaux-Radicaux"
+        it: "I Liberali"
+        en: "The Liberals"
+      keywords: ["fdp","plr"]
+    - website: "https://www.svp.ch"
+      twitter: "SVPch"
+      abbrs: ["SVP","UDC"]
+      name:
+        de: "Schweizerische Voklspartei"
+        fr: "Union Démocratique du Centre"
+        it: "Unione Democratica Di Centro"
+        en: "Swiss Peoples Party"
+      keywords: ["svp","udc"]
+    - website: "https://www.bdp.info"
+      twitter: "bdpschweiz"
+      abbrs: ["BDP","PBD"]
+      name:
+        de: "Bürgerlich Demokratische Partei"
+        fr: "Parti Bourgeois-Démoratique"
+        it: "Partito Borghese Democratico"
+        en: "Liberal Democartic Party"
+      keywords: ["bdp","pbd"]
+    - website: "www.cvp.ch"
+      twitter: "CVP_PDC"
+      abbrs: ["CVP","PDC"]
+      name:
+        de: "Christlichdemokratische Volkspartei"
+        fr: "Parti Démocrate-Chrétien"
+        it: "Partito Popolare Democratico"
+        en: "Christian Democrats"
+      keywords: ["cvp","pdc"]
+    - website: "https://www.evppev.ch"
+      twitter: "evppev"
+      abbrs: ["EVP","PEV"]
+      name:
+        de: "Evangelische Volkspartei der Schweiz"
+        fr: "Parti Evangélique Suisse"
+        it: "Partito Evangelico Svizzero"
+        en: "Evangelical People's Party"
+      keywords: ["evp","pev"]
+    - website: "https://www.gruene.ch/"
+      twitter: "GrueneCH"
+      abbrs: ["GPS", "PES"]
+      name:
+        de: "Die Grünen"
+        fr: "Les Verts"
+        it: "Partito Ecologista Svizzero - I Verdi"
+        en: "Green Party"
+      keywords: ["gp","pes","grüne","gruene"]
+    - website: "https://grunliberale.ch/"
+      twitter: "grunliberale"
+      abbrs: ["GLP", "PVL"]
+      name:
+        de: "Grünliberale"
+        fr: "Parti Vert'Liberale"
+        it: "Partito Verde-Librale"
+        en: "Green Liberal"
+      keywords: ["glp","pvl"]
+    - website: "http://www.mcge.ch/"
+      twitter: ""
+      abbrs: ["MCG"]
+      name:
+        de: "Mouvement Citoyens Genevois"
+        fr: "Mouvement Citoyens Genevois"
+        it: "Mouvement Citoyens Genevois"
+        en: "Mouvement Citoyens Genevois"
+      keywords: ["mcg"]
+    - website: "https://pda.ch/"
+      twitter: ""
+      abbrs: ["PDA","PST"]
+      name:
+        de: "Partei der Arbeit der Schweiz"
+        fr: "Parti Susisse de Travail"
+        it: "Partito Operaio e Popolare Pop"
+        en: "Partei der Arbeit der Schweiz"
+      keywords: ["pda","pst"]
+    - website: "http://www.lega-dei-ticinesi.ch/"
+      twitter: ""
+      abbrs: ["LEGA"]
+      name:
+        de: "Lega di Ticinesi"
+        fr: "Lega di Ticinesi"
+        it: "Lega di Ticinesi"
+        en: "Lega di Ticinesi"
+      keywords: ["lega"]
+    - website: "https://www.sp-ps.ch"
+      twitter: "spschweiz"
+      abbrs: ["SP","PS"]
+      name:
+        de: "Sozialdemokratische Partei"
+        fr: "Parti Socialiste"
+        it: "Partito Socialista"
+        en: "Social Democrats"
+      keywords: ["socialist", "sozialist"]

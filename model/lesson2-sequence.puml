@@ -1,0 +1,46 @@
+@startuml
+title
+  Tutorial 2
+  gsma = class instance of __GovernmentSocialMedialAnalyzer__
+end title
+actor main
+control gsma
+boundary yaml_pkg as ya
+boundary tweepy_pkg as tw
+boundary panda_pkg as pa
+boundary ploly_pkg as pl
+control browser
+
+
+main -> gsma: __init__("CH")
+    activate gsma
+        gsma -> ya: load("..cfg/config-CH.yaml")
+        ya --[#blue]> gsma: configObj
+        gsma -> ya: load("..secret/twitter.yaml")
+        ya --[#blue]> gsma: secretObj
+        gsma -> tw: establishAPIConnection(twToken)
+        tw --[#blue]> gsma: apiObj
+        note over gsma
+         our helper methods used
+         here not visualized
+        end note
+        gsma -> tw: api.lists_all(twAccount):
+        tw --[#blue]> gsma: twitterLists[]
+        gsma -> tw: api.list_members(list)
+        tw --[#blue]> gsma: membersOfAList[]
+        gsma -> gsma: __check_for_party()
+        gsma --[#blue]> main
+    deactivate gsma
+main -> gsma: create_politican_table()
+    activate gsma
+        gsma -> pa: createDataFrame(columns[])
+        pa --[#blue]> gsma: dataFrame
+        gsma -> pl: createTable(df)
+        pl --[#blue]> gsma: plTable
+        gsma -> pl: plot(plTable)
+        gsma --[#blue]> main
+    deactivate gsma
+main -> browser: view table in your plotly account
+
+
+@enduml
