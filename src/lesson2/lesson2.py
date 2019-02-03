@@ -117,6 +117,8 @@ class GovernmentSocialMediaAnalyzer(object):
                             if keyword.lower() in user.description.lower():
                                 res = party['abbrs'][0]
                                 break
+                # We are exiting here the party list iterations in
+                # case we found a result
                 if res != "unknown":
                     break
             party_column.append(res)
@@ -143,11 +145,32 @@ class GovernmentSocialMediaAnalyzer(object):
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-politician-list')
 
+    def create_party_table(self):
+        # Panda Data Frame - Table of Tweeter Users per Party
+        # https://stackoverflow.com/questions/48909110/python-pandas-mean-and-sum-groupby-on-different-columns-at-the-same-time
+        panda_data = { "Party": self.__col_party,
+                       "PartyCount": self.__col_party, # Duplicate Party column for the counting
+                       "FollowersCount": self.__col_followers_count,
+                       "FriendsCount": self.__col_friends_count
+                       }
+        df = DataFrame(panda_data , index=self.__labels)
+        # We use the as_index parameter, so that Party will also be a column of the data frame
+        df = df.groupby(["Party"], as_index=False).agg({'PartyCount':'count','FollowersCount':'sum', 'FriendsCount': 'sum'})
+        df = df.sort_values(['FollowersCount'], ascending=[0])
+        print(df)
+        # Create a Plotly Table
+        trace = go.Table(
+            header = dict(values=list(df.columns)),
+            cells = dict(values=[df.Party,  df.PartyCount, df.FollowersCount, df.FriendsCount]))
+        data = [trace]
+        py.plot(data, filename=self.__country_code+'-tw-party-list')
+        return df
 
 
 def main():
     analyzer_ch = GovernmentSocialMediaAnalyzer("CH")
     analyzer_ch.create_politican_table()
+    analyzer_ch.create_party_table()
 
 if __name__ == '__main__':
     main()

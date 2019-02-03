@@ -40,6 +40,11 @@ main -> gsma: create_politican_table()
         gsma -> pl: plot(plTable)
         gsma --[#blue]> main
     deactivate gsma
+main -> gsma: create_party_table()
+note right
+  Same as for the other table
+end note
+
 main -> browser: view table in your plotly account
 
 
