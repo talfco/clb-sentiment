@@ -4,14 +4,14 @@
 
 ### Class Diagram
 
-![Class Diagram](/model/out/lession1.png)
+![Class Diagram](/model/out/lesson1.png)
 
 ## Lession 2
 
 ### Class Diagram
 
-![Class Diagram](/model/out/lession2-class.png)
-![Sequence Diagram](/model/out/lession2-sequence.png)
+![Class Diagram](/model/out/lesson2-class.png)
+![Sequence Diagram](/model/out/lesson2-sequence.png)
 
 ### Sequence Diagram
 
