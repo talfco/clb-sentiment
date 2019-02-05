@@ -11,7 +11,10 @@
 ### Class Diagram
 
 ![Class Diagram](/model/out/lesson2-class.png)
-![Sequence Diagram](/model/out/lesson2-sequence.png)
 
 ### Sequence Diagram
+
+![Sequence Diagram](/model/out/lesson2-sequence.png)
+
+
 

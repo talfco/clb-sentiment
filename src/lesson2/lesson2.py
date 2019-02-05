@@ -72,8 +72,6 @@ class GovernmentSocialMediaAnalyzer(object):
         self.__col_description = [account.description for account in accounts]
         self.__col_followers_count = [account.followers_count for account in accounts]
         self.__col_friends_count = [account.friends_count for account in accounts]
-
-        # Exercise 1: Identify the Party
         self.__col_party = self.__check_for_party(accounts)
 
     def __get_government_members(self):
