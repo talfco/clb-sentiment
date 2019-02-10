@@ -6,6 +6,8 @@ import plotly.graph_objs as go
 from tweepy import OAuthHandler
 from pandas import DataFrame
 
+from govAPIFactory import GovAPIFactory
+
 
 # A Social Media Analyzer class based on twitter
 # anaylizing tweeter accounts of government members
@@ -32,7 +34,6 @@ class GovernmentSocialMediaAnalyzer(object):
         with open("../../cfg/"+file_name, 'r') as stream:
             try:
                 self.__cfg= yaml.load(stream)
-                print(self)
             except yaml.YAMLError as exc:
                 print("Config File ", file_name, " wrong format", exc)
                 exit(1)
@@ -134,7 +135,7 @@ class GovernmentSocialMediaAnalyzer(object):
         df = DataFrame(panda_data , index=self.__labels)
         # Sort by Followers Count
         df = df.sort_values(['FollowersCount'], ascending=[0])
-
+        print(df.columns)
         # Create a Plotly Table
         trace = go.Table(
             header = dict(values=list(df.columns)),
@@ -150,15 +151,16 @@ class GovernmentSocialMediaAnalyzer(object):
                        "FollowersCount": self.__col_followers_count,
                        "FriendsCount": self.__col_friends_count
                        }
-        df = DataFrame(panda_data , index=self.__labels)
+        df = DataFrame(panda_data, index=self.__labels)
         # We use the as_index parameter, so that Party will also be a column of the data frame
         df = df.groupby(["Party"], as_index=False).agg({'PartyCount':'count','FollowersCount':'sum', 'FriendsCount': 'sum'})
         df = df.sort_values(['FollowersCount'], ascending=[0])
         print(df)
+
         # Create a Plotly Table
         trace = go.Table(
-            header = dict(values=list(df.columns)),
-            cells = dict(values=[df.Party,  df.PartyCount, df.FollowersCount, df.FriendsCount]))
+            header=dict(values=list(df.columns)),
+            cells=dict(values=[df.Party,  df.PartyCount, df.FollowersCount, df.FriendsCount]))
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-party-list')
         return df
@@ -172,7 +174,6 @@ class GovernmentSocialMediaAnalyzer(object):
         ]
         py.plot(data, filename=self.__country_code+'-tw-party_politicans_count')
 
-
     def create_party_politicans_count_pie_chart(self, df):
         trace = go.Pie(labels=df.Party, values=df.PartyCount,
                        hoverinfo='label+percent', textinfo='value',
@@ -184,13 +185,29 @@ class GovernmentSocialMediaAnalyzer(object):
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-party_friends_count')
 
+    def create_politicans_from_govapi_table(self):
+        api = GovAPIFactory.create_country_gov_api(self.__country_code, self.__cfg)
+        li = api.load_government_members()
+        df = DataFrame.from_records(li)
+        print(df)
+        # Create a Plotly Table
+        print(list(df.values))
+        trace = go.Table(
+            header = dict(values=list(df.columns)),
+            cells = dict(values=list(df.values.transpose())))
+
+        data = [trace]
+        py.plot(data, filename=self.__country_code+'-govapi-member-list')
+        return df
+
 
 def main():
     analyzer_ch = GovernmentSocialMediaAnalyzer("CH")
-    analyzer_ch.create_politican_table()
-    df = analyzer_ch.create_party_table()
-    analyzer_ch.create_party_friends_count_bar_chart(df)
-    analyzer_ch.create_party_politicans_count_pie_chart(df)
+    analyzer_ch.create_politicans_from_govapi_table()
+    # analyzer_ch.create_politican_table()
+    # df = analyzer_ch.create_party_table()
+    # analyzer_ch.create_party_friends_count_bar_chart(df)
+    # analyzer_ch.create_party_politicans_count_pie_chart(df)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,9 @@
 twitterListAccount: "SoMePolis"
 twitterListName: "BundesparlamentarierInnen"
+govAPIUrl: "http://ws-old.parlament.ch/"
+govAPICouncillorsRes: "councillors"
+govAPIParams:
+   - format : "json"
 # https://www.parlament.ch/de/organe/fraktionen/im-parlament-vertretene-parteien
 parties:
     - twitter: "spschweiz"
