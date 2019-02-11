@@ -16,7 +16,8 @@ class GovernmentSocialMediaAnalyzer(object):
     # Class Instance Variable
     __cfg = {}
     __country_code = None
-    __api = None
+    __tw_api = None
+    __gov_api = None
     # Class Instance Variables used for the reporting
     __labels = None
     __col_screen_name = None
@@ -59,10 +60,13 @@ class GovernmentSocialMediaAnalyzer(object):
             # set access token and secret
             auth.set_access_token(access_token, access_token_secret)
             # create tweepy API object to fetch tweets
-            self.__api = tweepy.API(auth)
+            self.__tw_api = tweepy.API(auth)
         except:
             print("Error: Authentication Failed")
             exit(1)
+
+        # Get an government api class instance for the country __country_code
+        self.__gov_api = GovAPIFactory.create_country_gov_api(self.__country_code, self.__cfg)
 
         self.__extract_columns()
 
@@ -78,11 +82,11 @@ class GovernmentSocialMediaAnalyzer(object):
         self.__col_party = self.__check_for_party(accounts)
 
     def __get_government_members(self):
-        lists = self.__api.lists_all(self.__cfg['twitterListAccount'])
+        lists = self.__tw_api.lists_all(self.__cfg['twitterListAccount'])
         for list in lists:
             if list.name == self.__cfg['twitterListName']:
                 result = []
-                for item in tweepy.Cursor(self.__api.list_members, list_id=list.id).items():
+                for item in tweepy.Cursor(self.__tw_api.list_members, list_id=list.id).items():
                     result.append(item)
                 return result
         return None
@@ -123,7 +127,7 @@ class GovernmentSocialMediaAnalyzer(object):
             party_column.append(res)
         return party_column
 
-    def create_politican_table(self):
+    def create_tw_politican_table(self):
         # Panda Data Frame - Table of all Parliament Members
         panda_data = { 'ScreenName' : self.__col_screen_name,
                        'Name': self.__col_name,
@@ -143,7 +147,7 @@ class GovernmentSocialMediaAnalyzer(object):
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-politician-list')
 
-    def create_party_table(self):
+    def create_tw_party_table(self):
         # Panda Data Frame - Table of Tweeter Users per Party
         # https://stackoverflow.com/questions/48909110/python-pandas-mean-and-sum-groupby-on-different-columns-at-the-same-time
         panda_data = { "Party": self.__col_party,
@@ -163,7 +167,8 @@ class GovernmentSocialMediaAnalyzer(object):
             cells=dict(values=[df.Party,  df.PartyCount, df.FollowersCount, df.FriendsCount]))
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-party-list')
-        return df
+        self.create_party_friends_count_bar_chart(df)
+        self.create_party_politicans_count_pie_chart(df)
 
     def create_party_friends_count_bar_chart(self, df):
         data = [
@@ -185,9 +190,8 @@ class GovernmentSocialMediaAnalyzer(object):
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-party_friends_count')
 
-    def create_politicans_from_govapi_table(self):
-        api = GovAPIFactory.create_country_gov_api(self.__country_code, self.__cfg)
-        li = api.load_government_members()
+    def create_govapi_politican_table(self):
+        li = self.__gov_api.load_government_members()
         df = DataFrame.from_records(li)
         print(df)
         # Create a Plotly Table
@@ -203,11 +207,8 @@ class GovernmentSocialMediaAnalyzer(object):
 
 def main():
     analyzer_ch = GovernmentSocialMediaAnalyzer("CH")
-    analyzer_ch.create_politicans_from_govapi_table()
-    # analyzer_ch.create_politican_table()
-    # df = analyzer_ch.create_party_table()
-    # analyzer_ch.create_party_friends_count_bar_chart(df)
-    # analyzer_ch.create_party_politicans_count_pie_chart(df)
+    analyzer_ch.create_govapi_politican_table()
+    analyzer_ch.create_tw_politican_table()
 
 
 if __name__ == '__main__':

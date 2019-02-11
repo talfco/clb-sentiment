@@ -1,0 +1,43 @@
+@startuml
+title
+  Tutorial 2
+  gsma = class instance of __GovernmentSocialMedialAnalyzer__
+end title
+actor main
+control gsma
+control govAPIFactory
+control govAPI_CH
+control govAPI
+control SwissParliamentAPI
+
+autonumber 10 10 "[000]"
+main -> gsma: __init__("CH")
+activate gsma
+    gsma -> govAPIFactory: create_country_gov_api("CH")
+    activate govAPIFactory
+        govAPIFactory -> govAPI_CH: init()
+        govAPIFactory --> gsma
+    deactivate govAPIFactory
+        gsma -> govAPI_CH: load_government_members
+        activate govAPI_CH
+            govAPI_CH -> SwissParliamentAPI: fetchAllRecords()
+            loop forEachRecord
+            govAPI_CH -> govAPI: _add_person_record(rec)
+            activate govAPI
+            govAPI -> govAPI_CH: get_identifier(rec)
+            govAPI -> govAPI_CH: get_last_name(rec)
+            govAPI -> govAPI_CH: get_first_name(rec)
+            govAPI -> govAPI_CH: ...
+            govAPI -> govAPI: appendRecord()
+            govAPI --> govAPI_CH
+            deactivate govAPI
+            end
+        govAPI_CH --> gsma: return transformed dict of politicians
+        deactivate govAPI_CH
+deactivate gsma
+
+
+
+
+
+@enduml

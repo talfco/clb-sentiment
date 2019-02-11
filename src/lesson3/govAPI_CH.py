@@ -1,8 +1,7 @@
 from govAPI import GovAPI
-
 import requests
 
-# http://ws-old.parlament.ch/councillors?format=json
+
 class GovAPI_CH(GovAPI):
 
     def __init__(self, cfg):
@@ -42,7 +41,7 @@ class GovAPI_CH(GovAPI):
         return dict['salutationTitle']
 
     def _get_country(self,dict):
-        return ''
+        return 'CH'
 
     def _get_state_postal_code(self,dict):
         return dict['cantonName']
@@ -59,29 +58,28 @@ class GovAPI_CH(GovAPI):
     def _get_elected_date(self, dict):
         return self._convert_utc_timestamp(dict['councilMemberships'][0]['entryDate'])
 
-
+    # http://ws-old.parlament.ch/councillors?format=json
     def load_government_members(self):
         page_number=1
         url = self.__cfg['govAPIUrl']
-        politican_res = self.__cfg['govAPICouncillorsRes']
+        politician_res = self.__cfg['govAPICouncillorsRes']
         par = self.__cfg['govAPIParams']
         while True:
             par[0]['pageNumber'] = str(page_number)
             headers = requests.utils.default_headers()
             headers.update({ 'User-Agent': 'Mozilla/5.0'})
-            politicans = requests.get(url+politican_res, params=par[0], headers=headers).json()
+            politicians = requests.get(url+politician_res, params=par[0], headers=headers).json()
             has_more_pages = False
-            for politican in politicans:
-                if politican.get('hasMorePages'):
+            for politician in politicians:
+                if politician.get('hasMorePages'):
                     has_more_pages = True
-                if politican['active']:
-                    id = politican['id']
-                    details = requests.get(url+politican_res+"/"+str(id), params=par[0], headers=headers).json()
+                if politician['active']:
+                    id = politician['id']
+                    details = requests.get(url+politician_res+"/"+str(id), params=par[0], headers=headers).json()
                     print(details)
-                    self.add_person_record(details)
+                    self._add_person_record(details)
             if not has_more_pages:
                 break
             else:
-                page_number +=1
-
+                page_number += 1
         return self._members

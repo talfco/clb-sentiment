@@ -1,17 +1,8 @@
 from abc import ABC, abstractmethod
-from enum import Enum
 from pandas import DataFrame
 import datetime
 
 
-class GenderEnum (Enum):
-    MEN = 1
-    WOMAN = 2
-
-
-class CourtesyEnum (Enum):
-    MR = 1
-    MRS = 2
 
 
 class GovAPI(ABC):
@@ -84,7 +75,7 @@ class GovAPI(ABC):
 
     # This method will add a normalized person
     # record to our members array
-    def add_person_record(self,dict):
+    def _add_person_record(self, dict):
         person = {
             'id': self._get_id(dict),
             'active': self._get_active(dict),

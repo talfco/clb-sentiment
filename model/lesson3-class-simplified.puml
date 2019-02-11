@@ -1,0 +1,60 @@
+@startuml
+title lesson3.py
+
+
+class ABC {
+}
+
+class govAPI #SkyBlue {
+  -__members
+  -- abstract methods --
+  {abstract} +load_government_members()
+  -_get_identifier()
+  -_get_last_name()
+  -_get_first_name()
+  - ...more getters()...
+  -- implemented public methods --
+  + create_politican_from_govapi_table()
+  -- helper methods --
+  - _add_person_record(rec)
+  - _convert_utc_timestamp()
+}
+note left of govAPI
+  Defines the build plan for any class which
+  implements an access to a government API.
+  A class has to implement the load method as
+  well as a set of getter methods.
+  The rest is taken care by this class.
+end note
+
+
+ABC <|-- govAPI: inherits
+
+class govAPI_CH {
+      -- implemented methods --
+      +load_government_members()
+      -_get_identifier()
+      -_get_last_name()
+      -_get_first_name()
+      - ...more getters()...
+}
+class govAPI_UK {
+      -- implemented methods --
+      +load_government_members()
+      -_get_identifier()
+      -_get_last_name()
+      -_get_first_name()
+      - ...more getters()...
+}
+govAPI <|-- govAPI_CH: inherits
+govAPI <|-- govAPI_UK: inherits
+
+class govAPIFactory {
+  -- public static class methods  --
+  {static} + create_country_gov_api(country_code)
+}
+govAPIFactory .> govAPI_CH: create an instance ('CH')
+govAPIFactory .> govAPI_UK: create an instance ('UK')
+
+
+@enduml
