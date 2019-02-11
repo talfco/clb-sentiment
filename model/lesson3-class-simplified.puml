@@ -5,7 +5,8 @@ title lesson3.py
 class ABC {
 }
 
-class govAPI #SkyBlue {
+
+abstract class govAPI #SkyBlue {
   -__members
   -- abstract methods --
   {abstract} +load_government_members()

@@ -1,0 +1,45 @@
+@startuml
+title lesson3.py - Data Pipeline concept
+
+
+class govAPI_CH_record {
+   String: LastName
+   String: FirstName
+   String: PostalCode
+}
+
+class govAPI_CH_transform_rules {
+   -- our getters implementation --
+    transform_to_govapi_record()
+}
+
+class govAPI_UK_record {
+   String: name
+   String: sur_name
+   String: zip
+}
+
+class govAPI_UK_transform_rules {
+   -- our getters implementation --
+   transform_to_govapi_record()
+}
+
+class govAPI_record {
+    String: last_name
+    String: first_name
+    String: zip_code
+}
+note left of govAPI_record
+ Canonical Model
+ Standardized data structure
+ for further processing
+end note
+
+
+govAPI_CH_record --> govAPI_CH_transform_rules: consume
+govAPI_UK_record --> govAPI_UK_transform_rules: consume
+govAPI_CH_transform_rules --> govAPI_record: storeAs
+govAPI_UK_transform_rules --> govAPI_record: storeAs
+
+
+@enduml

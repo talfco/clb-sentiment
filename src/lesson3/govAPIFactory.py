@@ -1,4 +1,3 @@
-from govAPI import GovAPI
 from govAPI_CH import GovAPI_CH
 
 class GovAPIFactory:

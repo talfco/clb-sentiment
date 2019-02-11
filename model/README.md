@@ -26,6 +26,10 @@
 
 ![Class Diagram](/model/out/lesson3-class-simplified.png)
 
+### Class Diagram - Canonical Model Concept
+
+![Class Diagram](/model/out/lesson3-canonical-model.png)
+
 ### Sequnece Diagram
 
 ![Sequence Diagram](/model/out/lesson3-sequence.png)

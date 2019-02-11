@@ -1,13 +1,13 @@
 @startuml
 title
-  Tutorial 2
+  Tutorial 3
   gsma = class instance of __GovernmentSocialMedialAnalyzer__
 end title
 actor main
 control gsma
 control govAPIFactory
-control govAPI_CH
-control govAPI
+control govAPI_CH #red
+control govAPI #red
 control SwissParliamentAPI
 
 autonumber 10 10 "[000]"
@@ -32,8 +32,11 @@ activate gsma
             govAPI --> govAPI_CH
             deactivate govAPI
             end
-        govAPI_CH --> gsma: return transformed dict of politicians
         deactivate govAPI_CH
+        activate govAPI
+        gsma -> govAPI: create_politican_from_govapi_table()
+        govAPI --> gsma: return panda dataframe
+        deactivate govAPI
 deactivate gsma
 
 

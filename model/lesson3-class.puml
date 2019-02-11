@@ -1,6 +1,5 @@
 @startuml
 
-
 title lesson3.py
 
 class Tweepy  {
@@ -54,7 +53,7 @@ Pandas <.. GovernmentSocialMediaAnalyzer: uses
 Plotly <.. GovernmentSocialMediaAnalyzer: uses
 Yaml <.. GovernmentSocialMediaAnalyzer: uses
 
-class govAPI {
+abstract class govAPI {
   -__members
   -- abstract methods --
   {abstract} +load_government_members()
