@@ -28,7 +28,7 @@
 
 ### Class Diagram - Canonical Model Concept
 
-![Class Diagram](/model/out/lesson3-canonical-model.png)
+![Class Diagram](/model/out/lesson3-class-canonical-model.png)
 
 ### Sequnece Diagram
 
