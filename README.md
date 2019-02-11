@@ -2,5 +2,5 @@
 
 The following tutorials are available:
 
-* For lesson1.phy: [Medium Link](https://medium.com/@talfco/python-tutorial-retrieve-a-list-of-swiss-government-members-from-twitter-d5f999555f98)
-* For lesson2.phy: [Medium Link](https://medium.com/@talfco/python-tutorial-government-social-media-analyser-class-build-out-12858190b284)
+* Twitter Moments with all articles: [Twitter Link](https://twitter.com/i/moments/1092507080307720193)
+* The UML Model Repository: [model directory](model/README.md)
