@@ -16,12 +16,15 @@ activate gsma
     gsma -> govAPIFactory: create_country_gov_api("CH")
     activate govAPIFactory
         govAPIFactory -> govAPI_CH: init()
-        govAPIFactory --> gsma
+        govAPIFactory --> gsma: returns a govAPI instance
     deactivate govAPIFactory
-        gsma -> govAPI_CH: load_government_members
-        activate govAPI_CH
-            govAPI_CH -> SwissParliamentAPI: fetchAllRecords()
-            loop forEachRecord
+deactivate gsma
+main -> gsma: create_govapi_politican_table()
+activate gsma
+    gsma -> govAPI_CH: load_government_members
+    activate govAPI_CH
+        govAPI_CH -> SwissParliamentAPI: fetchAllRecords()
+        loop forEachRecord
             govAPI_CH -> govAPI: _add_person_record(rec)
             activate govAPI
             govAPI -> govAPI_CH: get_identifier(rec)
@@ -31,13 +34,16 @@ activate gsma
             govAPI -> govAPI: appendRecord()
             govAPI --> govAPI_CH
             deactivate govAPI
-            end
-        deactivate govAPI_CH
-        activate govAPI
-        gsma -> govAPI: create_politican_from_govapi_table()
-        govAPI --> gsma: return panda dataframe
-        deactivate govAPI
+        end
+        govAPI_CH --> gsma: return normalized data records
+    deactivate govAPI_CH
+        gsma -> gsma: createPandaFrame()
+        gsma -> gsma: createPlotlyTable()
+        gsma --> main: table available via plotly
+
 deactivate gsma
+
+
 
 
 
