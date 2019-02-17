@@ -209,6 +209,7 @@ def main():
     analyzer_ch = GovernmentSocialMediaAnalyzer("CH")
     analyzer_ch.create_govapi_politican_table()
     analyzer_ch.create_tw_politican_table()
+    analyzer_ch.create_tw_party_table()
 
 
 if __name__ == '__main__':
