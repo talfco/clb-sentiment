@@ -1,0 +1,89 @@
+@startuml
+
+hide empty members
+class DataType << (T,orchid) >>
+    note left
+    Also referred to
+    Measurement Scale
+    end note
+class Categorical << (T,orchid) >>
+    note left
+    Represents characteristics.
+    Therefore it can represent things
+    like a person's gender, language etc.
+    end note
+class Numerical << (T,orchid) >>
+    note right
+    Represents numerical data.
+    Therefore it can represent numbers
+    like a person's age, height etc.
+    end note
+class Nominal << (T,orchid) >>
+    note bottom
+    Represent discrete units
+    and are used to label
+    variables, that have
+    no quantitative value.
+    Nominal data that has
+    no order!
+    end note
+class Ordinal << (T,orchid) >>
+    note bottom
+    Represents discrete and
+    ordered units. It is nearly
+    the same as nominal data,
+    except that it's ordering
+    matters. Used to measure
+    non-numeric features.
+    end note
+class Discrete << (T,orchid) >>
+    note bottom
+    Represents discrete data
+    values which are distinct
+    and separate. Their values
+    can't be measured but they
+    <b>can be counted.</b>
+    end note
+class Continous << (T,orchid) >>
+    note right
+    Represents continuous data
+    measurements and therefore
+    their values can't be counted
+    but they <b>can be measured.</b>
+    end note
+class Interval << (T,orchid) >>
+    note bottom
+    Interval values represent ordered
+    units that have the same difference.
+    Therefore we speak of interval data
+    when we have a variable that contains
+    numeric values that are ordered and
+    where we know the exact differences
+    between the values.
+    end note
+class Ratio << (T,orchid) >>
+    note bottom
+    Ratio values are also ordered units
+    that have the same difference.
+    Ratio values are the same as interval
+    values, with the difference that they
+    do have an absolute zero.
+    Good examples are height, weight, length
+    end note
+
+DataType <|-- Categorical
+DataType <|-- Numerical
+
+Categorical <|-- Nominal
+Categorical <|-- Ordinal
+
+Numerical <|-- Discrete
+Numerical <|-- Continous
+
+Continous <|-- Interval
+Continous <|-- Ratio
+
+
+
+
+@enduml

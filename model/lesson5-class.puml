@@ -1,0 +1,117 @@
+@startuml
+
+title lesson5.py
+
+class Tweepy << (P,#FF7700) package >>  {
+   + OAuthHandler
+}
+
+class Pandas << (P,#FF7700) package >>  {
+  + DataFrame
+}
+
+class Yaml << (P,#FF7700) package >>  {
+  + load()
+}
+
+class Plotly << (P,#FF7700) package >>  {
+    + graph_objs
+    + plotly
+}
+
+class ABC << (P,#FF7700) package >>  {
+}
+
+class datetime << (P,#FF7700) package >>  {
+}
+
+class Request << (P,#FF7700) package >>  {
+}
+
+class Re << (P,#FF7700) package >>  {
+}
+
+class doublemetaphone << (P,#FF7700) package >>  {
+}
+
+class unicodedata << (P,#FF7700) package >>  {
+}
+
+class namematching << (M,#AF7900) module >> {
+    normalize_unicode_to_ascii(str)
+    sort_words(str)
+    double_metaphone(str)
+    double_metaphone_compare(str)
+}
+
+Re <..namematching: uses
+doublemetaphone <.. namematching: uses
+unicodedata <.. namematching: uses
+
+class GovernmentSocialMediaAnalyzer {
+  .. private instance variables ..
+  - __tw_api
+  - __gov_api
+  - __cfg
+  - __country_code
+  - ... more cols private attributes ...
+  -- public methods --
+  + __init__(country_code)
+  + create_tw_politican_table()
+  + create_tw_party_table()
+  + create_party_friends_count_bar_chart()
+  + create_party_politicans_count_pie_chart()
+  + create_govapi_politican_table()
+  .. private methods ..
+  - __extract_columns()
+  - __get_government_members()
+  - __check_for_party(user_list)
+  - __calculate_name_matching(row)
+}
+
+Tweepy <.. GovernmentSocialMediaAnalyzer : uses
+Pandas <.. GovernmentSocialMediaAnalyzer: uses
+Plotly <.. GovernmentSocialMediaAnalyzer: uses
+Yaml <.. GovernmentSocialMediaAnalyzer: uses
+
+abstract class govAPI {
+  -__members
+  -- abstract methods --
+  {abstract} +load_government_members()
+  -_get_identifier()
+  -_get_last_name()
+  -_get_first_name()
+  - ...more getters()...
+  -- implemented public methods --
+  + create_politican_from_govapi_table()
+  -- helper methods --
+  - _add_person_record(rec)
+  - _convert_utc_timestamp()
+  - __calculate_name_matching(row)
+}
+
+ABC <|-- govAPI: inherits
+datetime <.. govAPI: uses
+Pandas <.. govAPI: uses
+
+class govAPI_CH {
+      -- implemented methods --
+      +load_government_members()
+      -_get_identifier()
+      -_get_last_name()
+      -_get_first_name()
+      - ...more getters()...
+}
+govAPI <|-- govAPI_CH: inherits
+GovernmentSocialMediaAnalyzer ..> govAPIFactory: uses
+
+class govAPIFactory {
+  -- public static class methods  --
+  {static} + create_country_gov_api(country_code)
+}
+govAPIFactory .> govAPI_CH: create an instance (CH)
+
+govAPI_CH ..> Request: uses
+
+
+@enduml

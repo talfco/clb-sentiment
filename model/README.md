@@ -30,6 +30,18 @@
 
 ![Class Diagram](/model/out/lesson3-class-canonical-model.png)
 
-### Sequnece Diagram
+### Sequence Diagram
 
 ![Sequence Diagram](/model/out/lesson3-sequence.png)
+
+## Lesson 4
+
+### Data Type Classification Model for Statistics
+
+![Concept Diagram](/model/out/lesson4-datatype-classification.png)
+
+## Lesson 5
+
+### Class Diagram
+
+![Class Diagram](/model/out/lesson5-class.png)

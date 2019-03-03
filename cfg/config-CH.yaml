@@ -1,5 +1,9 @@
 twitterListAccount: "SoMePolis"
 twitterListName: "BundesparlamentarierInnen"
+twitterNameCleaner: ["Dr.","Zürich"]
+twitterNamesExpander:
+  - abbreviation: "Chr."
+    name: "Christophe"
 govAPIUrl: "http://ws-old.parlament.ch/"
 govAPICouncillorsRes: "councillors"
 govAPIParams:
