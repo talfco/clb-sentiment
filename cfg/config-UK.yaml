@@ -1,0 +1,36 @@
+twitterListAccount: "TwitterGov"
+twitterListName: "UK MPs"
+govAPIUrl: "http://lda.data.parliament.uk/"
+govAPICouncillorsRes: "members.json"
+govAPIParams:
+   - _pageSize : "500"
+
+# https://www.parlament.ch/de/organe/fraktionen/im-parlament-vertretene-parteien
+parties:
+    - twitter: "UKIP"
+      abbrs: ["UKIP"]
+      keywords: []
+
+    - twitter: "TheSNP"
+      abbrs: ["SNP"]
+      keywords: []
+
+    - twitter: "TheGreenParty"
+      abbrs: ["GP","GreenParty"]
+      keywords: []
+
+    - twitter: "Plaid_Cymru"
+      abbrs: ["PC"]
+      keywords: []
+
+    - twitter: "UKLabour"
+      abbrs: ["Labour"]
+      keywords: []
+
+    - twitter: "Conservatives"
+      abbrs: ["Cons"]
+      keywords: []
+
+    - twitter: "LibDems"
+      abbrs: ["LibDems"]
+      keywords: []
