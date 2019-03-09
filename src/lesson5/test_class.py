@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from name_matching import sort_words,normalize_unicode_to_ascii,double_metaphone,double_metaphone_compare, Threshold
+from namematching import sort_words,normalize_unicode_to_ascii,double_metaphone,double_metaphone_compare, Threshold
 
 class TestClass(object):
 
