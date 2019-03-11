@@ -69,8 +69,9 @@ def generateNamePermutationList(lookup_table, index, name_list):
     dict2 = {}
     for entry in perms:
         str1 = ''.join(entry)
-        key1 = double_metaphone(str1)[0]
-        key2 = double_metaphone(str1)[1]
+        tpl =  double_metaphone(str1)
+        key1 = tpl[0]
+        key2 = tpl[1]
         dict1[key1] = "12ABC"
         if key2 != '':
             dict2[key2] = "12ABC"
