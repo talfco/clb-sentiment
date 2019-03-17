@@ -1,46 +1,28 @@
 @startuml
 title
-  Tutorial 3
-  gsma = class instance of __GovernmentSocialMedialAnalyzer__
+  Tutorial 6 - add_person_to_lookup-directory sequence
 end title
 actor main
-control gsma
-control govAPIFactory
-control govAPI_CH #red
-control govAPI #red
-control SwissParliamentAPI
+entity nameLookupDirectory as gsma
+control "metaphone Library" as meta
+
 
 autonumber 10 10 "[000]"
-main -> gsma: __init__("CH")
-activate gsma
-    gsma -> govAPIFactory: create_country_gov_api("CH")
-    activate govAPIFactory
-        govAPIFactory -> govAPI_CH: init()
-        govAPIFactory --> gsma: returns a govAPI instance
-    deactivate govAPIFactory
-deactivate gsma
-main -> gsma: create_govapi_politican_table()
-activate gsma
-    gsma -> govAPI_CH: load_government_members
-    activate govAPI_CH
-        govAPI_CH -> SwissParliamentAPI: fetchAllRecords()
-        loop forEachRecord
-            govAPI_CH -> govAPI: _add_person_record(rec)
-            activate govAPI
-            govAPI -> govAPI_CH: get_identifier(rec)
-            govAPI -> govAPI_CH: get_last_name(rec)
-            govAPI -> govAPI_CH: get_first_name(rec)
-            govAPI -> govAPI_CH: ...
-            govAPI -> govAPI: appendRecord()
-            govAPI --> govAPI_CH
-            deactivate govAPI
-        end
-        govAPI_CH --> gsma: return normalized data records
-    deactivate govAPI_CH
-        gsma -> gsma: createPandaFrame()
-        gsma -> gsma: createPlotlyTable()
-        gsma --> main: table available via plotly
+main -> gsma: __init__()
 
+main -> gsma: add_person_to_lookup_directory(person_id,name_tuple)
+activate gsma
+    gsma -> gsma: generate_combinations(name_tuple): tuples
+    gsma -> gsma: add_combinations_to_directory(tuples, person_id)
+    activate gsma
+        loop forEach tuple in tuples
+            gsma -> gsma: generate_normalized_name(tuple): norm_name
+            gsma -> meta: doublemetaphone(norm_name); db_tuple
+            gsma -> gsma: addToLookupDictionaryIfNecessary(db_tuple, person_id)
+
+        end
+                 gsma --> main
+    deactivate gsma
 deactivate gsma
 
 

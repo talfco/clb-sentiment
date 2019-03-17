@@ -5,6 +5,7 @@ import requests
 class GovAPI_CH(GovAPI):
 
     def __init__(self, cfg):
+        GovAPI.__init__(self)
         self.__cfg = cfg
 
     def _get_active(self,dict):

@@ -1,0 +1,52 @@
+@startuml
+title
+  Tutorial 3
+  gsma = class instance of __GovernmentSocialMedialAnalyzer__
+end title
+actor main
+control gsma
+control govAPIFactory
+control govAPI_CH #red
+control govAPI #red
+control SwissParliamentAPI
+
+autonumber 10 10 "[000]"
+main -> gsma: __init__("CH")
+activate gsma
+    gsma -> govAPIFactory: create_country_gov_api("CH")
+    activate govAPIFactory
+        govAPIFactory -> govAPI_CH: init()
+        govAPIFactory --> gsma: returns a govAPI instance
+    deactivate govAPIFactory
+deactivate gsma
+main -> gsma: create_govapi_politican_table()
+activate gsma
+    gsma -> govAPI_CH: load_government_members
+    activate govAPI_CH
+        govAPI_CH -> SwissParliamentAPI: fetchAllRecords()
+        loop forEachRecord
+            govAPI_CH -> govAPI: _add_person_record(rec)
+            activate govAPI
+            govAPI -> govAPI_CH: get_identifier(rec)
+            govAPI -> govAPI_CH: get_last_name(rec)
+            govAPI -> govAPI_CH: get_first_name(rec)
+            govAPI -> govAPI_CH: ...
+            govAPI -> govAPI: appendRecord()
+            govAPI --> govAPI_CH
+            deactivate govAPI
+        end
+        govAPI_CH --> gsma: return normalized data records
+    deactivate govAPI_CH
+        gsma -> gsma: createPandaFrame()
+        gsma -> gsma: createPlotlyTable()
+        gsma --> main: table available via plotly
+
+deactivate gsma
+
+
+
+
+
+
+
+@enduml

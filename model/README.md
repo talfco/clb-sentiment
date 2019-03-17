@@ -45,3 +45,13 @@
 ### Class Diagram
 
 ![Class Diagram](/model/out/lesson5-class.png)
+
+## Lesson 6
+
+### Sequence Diagram
+
+![Sequence Diagram](/model/out/lesson5-sequence.png)
+
+### Class Diagram
+
+![Class Diagram](/model/out/lesson5-class.png)

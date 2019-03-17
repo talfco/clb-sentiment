@@ -55,28 +55,11 @@ def double_metaphone_compare(tuple1,tuple2,threshold):
     return False
 
 
-def generateNamePermutationList(lookup_table, index, name_list):
+def generate_permutations(name_list):
     perms = []
     perms.extend(itertools.permutations(name_list))
     i = len(name_list)-1
     while i > 0:
         perms.extend(itertools.permutations(name_list,i))
         i -=1
-
-    print("Permutations: "+str(len(perms)))
-    print(perms.__str__())
-    dict1 = {}
-    dict2 = {}
-    for entry in perms:
-        str1 = ''.join(entry)
-        tpl =  double_metaphone(str1)
-        key1 = tpl[0]
-        key2 = tpl[1]
-        dict1[key1] = "12ABC"
-        if key2 != '':
-            dict2[key2] = "12ABC"
-
-
-    print(dict1.__str__())
-    print(dict2.__str__())
     return perms

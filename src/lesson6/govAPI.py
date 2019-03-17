@@ -2,11 +2,14 @@ from abc import ABC, abstractmethod
 from pandas import DataFrame
 import datetime
 from namematching import sort_words,normalize_unicode_to_ascii,double_metaphone
+from nameLookupDirectory import NameLookupDirectory
 
 
 class GovAPI(ABC):
 
-    _members = []
+    def __init__(self):
+        self._members = []
+        self._nameLookupDirectory =  NameLookupDirectory()
 
     # The method will load all government members into the members table
     # It will do that by calling the method 'add_person_record()'
@@ -94,6 +97,18 @@ class GovAPI(ABC):
             'townName': self._get_town_name(dict)
         }
         self._members.append(person)
+        # Build up our Lookup Directory
+        rec = []
+        if self._get_first_name(dict) != "":
+            rec.append(self._get_first_name(dict))
+        if self._get_middle_name(dict) != "":
+            rec.append(self._get_middle_name(dict))
+        if self._get_last_name(dict) != "":
+            rec.append(self._get_last_name(dict))
+        self._nameLookupDirectory.add_person_to_lookup_directory( self._get_id(dict), tuple(rec))
+
+    def match_name(self, name_tuple):
+        return self._nameLookupDirectory.match_name(name_tuple)
 
     def create_politican_from_govapi_table(self):
         self.load_government_members()
@@ -111,6 +126,9 @@ class GovAPI(ABC):
         row['col_match2'] = tp[0]
         row['col_match3'] = tp[1]
         return row
+
+    def match_name(self, name_tuple):
+        return self._nameLookupDirectory.match_name(name_tuple)
 
     # Helper Function to convert a date to a UTC date
     def _convert_utc_timestamp(self, edate):

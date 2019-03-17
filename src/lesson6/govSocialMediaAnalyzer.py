@@ -167,15 +167,22 @@ class GovernmentSocialMediaAnalyzer(object):
 
     def __calculate_name_matching(self, row):
         name = row['Name']
-        for clean in self.__cfg['twitterNameCleaner']:
-            name = name.replace(clean ,'')
-        for expand in self.__cfg['twitterNamesExpander']:
-            name = name.replace(expand.get('abbreviation'), expand.get('name'))
-        norm_name = (sort_words(normalize_unicode_to_ascii(name))).strip()
-        tp = double_metaphone(norm_name)
-        row['col_match1'] = norm_name
-        row['col_match2'] = tp[0]
-        row['col_match3'] = tp[1]
+        name = (normalize_unicode_to_ascii(name)).strip()
+        #for clean in self.__cfg['twitterNameCleaner']:
+        #    name = name.replace(clean ,'')
+        #for expand in self.__cfg['twitterNamesExpander']:
+        #    name = name.replace(expand.get('abbreviation'), expand.get('name'))
+        tp = tuple(name.split(" "))
+        res = self.__gov_api.match_name(tp)
+        if res is not None:
+            row['col_match1'] = res[0]
+            row['col_match2'] = str(res[1])
+            row['col_match3'] = ""
+        #norm_name = (sort_words(normalize_unicode_to_ascii(name))).strip()
+        #tp = double_metaphone(norm_name)
+        #row['col_match1'] = norm_name
+        #row['col_match2'] = tp[0]
+        #row['col_match3'] = tp[1]
         return row
 
     def create_tw_party_table(self, df):
