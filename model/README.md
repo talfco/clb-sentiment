@@ -50,8 +50,8 @@
 
 ### Sequence Diagram
 
-![Sequence Diagram](/model/out/lesson5-sequence.png)
+![Sequence Diagram](/model/out/lesson6-sequence.png)
 
 ### Class Diagram
 
-![Class Diagram](/model/out/lesson5-class.png)
+![Class Diagram](/model/out/lesson6-class.png)
