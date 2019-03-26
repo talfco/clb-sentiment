@@ -23,24 +23,25 @@ class NameLookupDirectory:
         name_str = ' '.join(name_tuple)
         return name_str.lower()
 
-    def add_combinations_to_directory(self, comb_tuples, person_id):
+    def add_combinations_to_directory(self, comb_tuples, person_id, last_name):
         for comb in comb_tuples:
-            concat_name = self.generate_normalized_name(comb)
-            metaphone_tuple = doublemetaphone(concat_name)
-            if metaphone_tuple[0] in self.__lookup_dict[0]:
-                if not person_id in self.__lookup_dict[0][metaphone_tuple[0]]:
-                    self.__lookup_dict[0][metaphone_tuple[0]].append(person_id)
-            else:
-                self.__lookup_dict[0][metaphone_tuple[0]] = [person_id]
-            if metaphone_tuple[1] in self.__lookup_dict[1]:
-                if not person_id in self.__lookup_dict[1][metaphone_tuple[1]]:
-                    self.__lookup_dict[1][metaphone_tuple[1]].append(person_id)
-            else:
-                self.__lookup_dict[1][metaphone_tuple[1]] = [person_id]
+            if last_name  in comb:
+                concat_name = self.generate_normalized_name(comb)
+                metaphone_tuple = doublemetaphone(concat_name)
+                if metaphone_tuple[0] in self.__lookup_dict[0]:
+                    if not person_id in self.__lookup_dict[0][metaphone_tuple[0]]:
+                        self.__lookup_dict[0][metaphone_tuple[0]].append(person_id)
+                else:
+                    self.__lookup_dict[0][metaphone_tuple[0]] = [person_id]
+                if metaphone_tuple[1] in self.__lookup_dict[1]:
+                    if not person_id in self.__lookup_dict[1][metaphone_tuple[1]]:
+                        self.__lookup_dict[1][metaphone_tuple[1]].append(person_id)
+                else:
+                    self.__lookup_dict[1][metaphone_tuple[1]] = [person_id]
 
-    def add_person_to_lookup_directory(self, person_id, name_tuple):
+    def add_person_to_lookup_directory(self, person_id, name_tuple, last_name_pos):
         tuples = self.generate_combinations(name_tuple)
-        self.add_combinations_to_directory(tuples, person_id)
+        self.add_combinations_to_directory(tuples, person_id, name_tuple[last_name_pos])
 
     def match_name(self, name_tuple):
         match_list = []

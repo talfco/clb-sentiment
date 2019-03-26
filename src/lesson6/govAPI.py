@@ -98,14 +98,15 @@ class GovAPI(ABC):
         }
         self._members.append(person)
         # Build up our Lookup Directory
+        last_name = self._get_last_name(dict)
         rec = []
         if self._get_first_name(dict) != "":
             rec.append(self._get_first_name(dict))
         if self._get_middle_name(dict) != "":
             rec.append(self._get_middle_name(dict))
-        if self._get_last_name(dict) != "":
-            rec.append(self._get_last_name(dict))
-        self._nameLookupDirectory.add_person_to_lookup_directory( self._get_id(dict), tuple(rec))
+        if last_name != "":
+            rec.append(last_name)
+            self._nameLookupDirectory.add_person_to_lookup_directory(self._get_id(dict), tuple(rec), len(rec)-1)
 
     def match_name(self, name_tuple):
         return self._nameLookupDirectory.match_name(name_tuple)
@@ -115,6 +116,13 @@ class GovAPI(ABC):
         df = DataFrame.from_records(self._members)
         df = df.apply(self.__calculate_name_matching, axis=1)
         return df
+
+    def get_person_record(self, id):
+        recs =  list(filter(lambda person: person['id'] == id, self._members))
+        if len(recs) != 1:
+            return None
+        else:
+            return recs[0]
 
     # We add three additional rows required for the fuzzy
     # name matching

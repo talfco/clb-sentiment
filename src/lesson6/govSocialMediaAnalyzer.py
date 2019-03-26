@@ -149,40 +149,35 @@ class GovernmentSocialMediaAnalyzer(object):
         trace = go.Table(
             header=dict(values=list(df.columns)),
             cells=dict(values=[df.ScreenName, df.Name, df.Description, df.FollowersCount, df.FriendsCount,
-                               df.Party, df.col_match1, df.col_match2, df.col_match3]))
+                               df.Party, df.col_match1, df.col_match2, df.party, df.electedDate,
+                               df.gender, df.maritalStatus, df.birthDate]))
         data = [trace]
         py.plot(data, filename=self.__country_code+'-tw-politician-list')
+        return df
 
-        merge_df = pd.merge(left=df, right=apidef, how='left', left_on='col_match2', right_on='col_match2')
-
-        trace = go.Table(
-            header=dict(values=['ScreenName', 'Name', 'FollowersCount', 'FriendsCount', 'Party', 'party', 'electedDate',
-                                'gender', 'maritalStatus', 'birthDate', 'normalizedName']),
-            cells=dict(values=[merge_df.ScreenName, merge_df.Name, merge_df.FollowersCount, merge_df.FriendsCount,
-                               merge_df.Party, merge_df.party, merge_df.electedDate, merge_df.gender,
-                               merge_df.maritalStatus, merge_df.birthDate, merge_df.col_match1_x]))
-        data = [trace]
-        py.plot(data, filename=self.__country_code+'-tw-politician-merged-list')
-        return merge_df
 
     def __calculate_name_matching(self, row):
         name = row['Name']
         name = (normalize_unicode_to_ascii(name)).strip()
-        #for clean in self.__cfg['twitterNameCleaner']:
-        #    name = name.replace(clean ,'')
-        #for expand in self.__cfg['twitterNamesExpander']:
-        #    name = name.replace(expand.get('abbreviation'), expand.get('name'))
         tp = tuple(name.split(" "))
         res = self.__gov_api.match_name(tp)
-        if res is not None:
+        if res[0] is not None:
             row['col_match1'] = res[0]
             row['col_match2'] = str(res[1])
-            row['col_match3'] = ""
-        #norm_name = (sort_words(normalize_unicode_to_ascii(name))).strip()
-        #tp = double_metaphone(norm_name)
-        #row['col_match1'] = norm_name
-        #row['col_match2'] = tp[0]
-        #row['col_match3'] = tp[1]
+            person = self.__gov_api.get_person_record(res[0])
+            row['party'] = person.get('party')
+            row['electedDate'] = person.get('electedDate')
+            row['gender'] = person.get('gender')
+            row['maritalStatus'] = person.get('maritalStatus')
+            row['birthDate'] = person.get('birthDate')
+        else:
+            row['col_match1'] = ""
+            row['col_match2'] = ""
+            row['party'] = ""
+            row['electedDate'] = ""
+            row['gender'] = ""
+            row['maritalStatus'] = ""
+            row['birthDate'] = ""
         return row
 
     def create_tw_party_table(self, df):
